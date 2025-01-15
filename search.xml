@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>gamemaker studio 2 摄像机</title>
+    <url>/2025/01/15/gamemakerCamera/</url>
+    <content><![CDATA[<p>camera的写法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//Move towards player</span><br><span class="line">if (instance_exists(obj_player))</span><br><span class="line">&#123;</span><br><span class="line">	move_towards_point(obj_player.x,obj_player.y,max(spd-(hit*spd),0));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//Angle sprite based on direction</span><br><span class="line">image_angle = direction;</span><br><span class="line"></span><br><span class="line">//Gradually reduce &quot;just hit&quot; effect</span><br><span class="line">if (hit &gt; 0) hit -= 0.05; else hit = 0;</span><br><span class="line"></span><br><span class="line">//Destroy if hp is less than or equal to 0</span><br><span class="line">if (hp &lt;= 0) instance_destroy();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">var cam = view_camera[0] </span><br><span class="line">camera_set_view_pos(cam,camera_get_view_x(cam)+random_range(-shake,shake),camera_get_view_y(cam)+random_range(-shake,shake)) </span><br><span class="line"></span><br><span class="line">视口属性：指的是运行之后窗口的分辨率</span><br><span class="line">相机属性：指的是放大多少或者缩小多少界面</span><br><span class="line">居中物体公式代码：</span><br><span class="line">``</span><br></pre></td></tr></table></figure>
+<p>camera_set_view_pos(view_camera[0],Object3.x-视口属性x&#x2F;2,Object3.y-视口属性y&#x2F;2)</p>
+<h1 id="创建相机"><a href="#创建相机" class="headerlink" title="创建相机"></a>创建相机</h1><p>此函数将创建一个 “空 “摄像机，即：一个没有定义视图或投影设置的摄像机。一旦你创建了摄像机，你就可以使用不同的<a href="http://127.0.0.1:51290/GameMaker_Language/GML_Reference/Maths_And_Numbers/Matrix_Functions/Matrix_Functions.htm">矩阵函数</a>来设置视图和投影矩阵。你也可以使用这个函数来创建摄像机，然后使用不同的 camera_set_* 函数来设置视图，但是请注意，你_必须_至少提供一个位置和视图尺寸，否则产生的摄像机将是无效的，如果应用于视图端口，会产生奇怪的结果（如果你没有设置object 以下，边界或移动速度，这些将被设置为视图摄像机的默认值，在Room 编辑器）。</p>
+<p>请注意，摄像机和所有的动态资源一样，在创建时将占用内存。这意味着你需要注意不要不必要地创建相机，并通过调用函数销毁那些你不需要的相机 <a href="http://127.0.0.1:51290/GameMaker_Language/GML_Reference/Cameras_And_Display/Cameras_And_Viewports/camera_destroy.htm">camera_destroy()</a>.这也意味着，如果分配给 global 变量，摄像机将从room 持续到room （分配给实例或局部变量时也会持续存在，但你在改变room 后无法访问它们，因此会有内存泄漏），因此你可以–例如–创建一个新的摄像机，将其分配给一个全局变量，然后在每个room 的开始设置所需的视图和投影矩阵以及你需要使用的视图端口。</p>
+<h4 id="语法。"><a href="#语法。" class="headerlink" title="语法。"></a>语法。</h4><p>camera_create();</p>
+<h4 id="返回。"><a href="#返回。" class="headerlink" title="返回。"></a>返回。</h4><p>Camera ID</p>
+<h4 id="例子。"><a href="#例子。" class="headerlink" title="例子。"></a>例子。</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">view_camera[0] = camera_create();  </span><br><span class="line">var viewmat = matrix_build_lookat(640, 240, -10, 640, 240, 0, 0, 1, 0);  </span><br><span class="line">var projmat = matrix_build_projection_ortho(640, 480, 1.0, 32000.0);  </span><br><span class="line">camera_set_view_mat(view_camera[0], viewmat);  </span><br><span class="line">camera_set_proj_mat(view_camera[0], projmat);</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码创建了一个新的摄像机并将其ID分配给view[0]。然后，视图和投影矩阵被创建并存储在本地变量中，然后被用来设置摄像机。</p>
+<p>背面。<a href="http://127.0.0.1:51290/GameMaker_Language/GML_Reference/Cameras_And_Display/Cameras_And_Viewports/Cameras_And_View_Ports.htm">照相机和查看端口</a></p>
+<h5 id=""><a href="#" class="headerlink" title=""></a></h5>]]></content>
+      <tags>
+        <tag>gm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>defold的父子级</title>
+    <url>/2025/01/15/defold1/</url>
+    <content><![CDATA[<p>不控制它本身，而是控制它的父级，这样更安全，更整体<br>也就是Go，object</p>
+<p>go.set_position(vmath.vector3(x,y,z),”直接输入object的ID，不需要url”)</p>
+<p>通过这样的方式获取鼠标的坐标：</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">init</span><span class="params">(self)</span></span></span><br><span class="line">	<span class="comment">-- 启用输入焦点以接收鼠标事件</span></span><br><span class="line">	msg.post(<span class="string">&quot;.&quot;</span>, <span class="string">&quot;acquire_input_focus&quot;</span>)</span><br><span class="line">	mouse_pos = vmath.vector3(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">on_input</span><span class="params">(self, action_id, action)</span></span></span><br><span class="line">	<span class="keyword">if</span> action.x <span class="keyword">and</span> action.y <span class="keyword">then</span> </span><br><span class="line">		mouse_pos = vmath.vector3(action.x, action.y, <span class="number">1</span>)</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>这样可以让鼠标的坐标永久的赋予在mouse_pos上面</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">on_input</span><span class="params">(self, action_id, action)</span></span></span><br><span class="line">	mouse_pos = vmath.vector3(action.x, action.y, <span class="number">1</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>之前没理解，其实只要发出了对Input的请求，action.x和action.y就已经可以直接使用了，而且input也是帧运行的函数<br>完全的成功，而且改物体本身会比改子集成功率大得多，基本上就是设计给父级使用的。</p>
+]]></content>
+      <tags>
+        <tag>defold</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>tic-80游戏状态机框架</title>
+    <url>/2025/01/15/tic1/</url>
+    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gameState =&#123;&#125;</span><br><span class="line">function TIC()</span><br><span class="line">	pad = btnp(0)</span><br><span class="line">	cls(0)</span><br><span class="line">	if pad then</span><br><span class="line">		print(&quot;pad&quot;, 10, 10, 15)</span><br><span class="line">	end</span><br><span class="line">	gameState()</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function game_menu()</span><br><span class="line">	cls(0)</span><br><span class="line">	print(&quot;game menu&quot;, 10, 10, 15)</span><br><span class="line">	if pad then</span><br><span class="line">		gameState = game_play</span><br><span class="line">	end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function game_play()</span><br><span class="line">	cls(0)</span><br><span class="line">	print(&quot;game play&quot;, 10, 10, 15)</span><br><span class="line">	if pad then</span><br><span class="line">		gameState = game_over</span><br><span class="line">	end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function game_over()</span><br><span class="line">	cls(0)</span><br><span class="line">	print(&quot;game over&quot;, 10, 10, 15)</span><br><span class="line">	if pad then</span><br><span class="line">		gameState = game_menu</span><br><span class="line">	end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function TIC()</span><br><span class="line">	pad = btnp(0)</span><br><span class="line">	m1,m2,m3 = mouse()</span><br><span class="line">	cls(0)</span><br><span class="line">	print(m3,20,20,10)</span><br><span class="line">	gameState()</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function game_menu()</span><br><span class="line">	cls(0)</span><br><span class="line">	print(&quot;game menu&quot;, 10, 10,10)</span><br><span class="line">	if m3 then</span><br><span class="line">		gameState = game_play</span><br><span class="line">	end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function game_play()</span><br><span class="line">	cls(0)</span><br><span class="line">	print(&quot;game play&quot;, 10, 10,10)</span><br><span class="line">	if m3 then</span><br><span class="line">		gameState = game_over</span><br><span class="line">	end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function game_over()</span><br><span class="line">	cls(0)</span><br><span class="line">	print(&quot;game over&quot;, 10, 10,10)</span><br><span class="line">	if m3 then</span><br><span class="line">		gameState = game_menu</span><br><span class="line">	end</span><br><span class="line">end</span><br><span class="line">gameState = game_menu</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>tic</tag>
+      </tags>
+  </entry>
+</search>
