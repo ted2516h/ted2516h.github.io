@@ -47,4 +47,21 @@
         <tag>tic</tag>
       </tags>
   </entry>
+  <entry>
+    <title>defold的父子级</title>
+    <url>/2025/01/15/defold2/</url>
+    <content><![CDATA[<p>不控制它本身，而是控制它的父级，这样更安全，更整体<br>也就是Go，object</p>
+<p>go.set_position(vmath.vector3(x,y,z),”直接输入object的ID，不需要url”)</p>
+<p>通过这样的方式获取鼠标的坐标：</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">init</span><span class="params">(self)</span></span></span><br><span class="line">	<span class="comment">-- 启用输入焦点以接收鼠标事件</span></span><br><span class="line">	msg.post(<span class="string">&quot;.&quot;</span>, <span class="string">&quot;acquire_input_focus&quot;</span>)</span><br><span class="line">	mouse_pos = vmath.vector3(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">on_input</span><span class="params">(self, action_id, action)</span></span></span><br><span class="line">	<span class="keyword">if</span> action.x <span class="keyword">and</span> action.y <span class="keyword">then</span> </span><br><span class="line">		mouse_pos = vmath.vector3(action.x, action.y, <span class="number">1</span>)</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>这样可以让鼠标的坐标永久的赋予在mouse_pos上面</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">on_input</span><span class="params">(self, action_id, action)</span></span></span><br><span class="line">	mouse_pos = vmath.vector3(action.x, action.y, <span class="number">1</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>之前没理解，其实只要发出了对Input的请求，action.x和action.y就已经可以直接使用了，而且input也是帧运行的函数<br>完全的成功，而且改物体本身会比改子集成功率大得多，基本上就是设计给父级使用的。</p>
+]]></content>
+      <tags>
+        <tag>defold</tag>
+      </tags>
+  </entry>
 </search>
